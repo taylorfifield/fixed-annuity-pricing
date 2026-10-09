@@ -2,7 +2,7 @@
 
 **Python | Actuarial Modeling | Excel | Financial Analysis | GitHub Actions**
 
-**Project Status:** Completed | Automated Validation Passed | Results Generated
+Developed by Taylor Fifield
 
 ## Project Overview
 
