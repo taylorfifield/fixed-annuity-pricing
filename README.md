@@ -1,2 +1,650 @@
-# fixed-annuity-pricing
-This project develops a simplified actuarial model to evaluate the financial performance of a hypothetical fixed deferred annuity portfolio over a 10-year period. Developed by Taylor Fifield.
+# Fixed Annuity Pricing & Sensitivity Analysis
+
+**Python | Actuarial Modeling | Excel | Financial Analysis | GitHub Actions**
+
+**Project Status:** Completed | Automated Validation Passed | Results Generated
+
+## Project Overview
+
+This project develops a simplified actuarial model to evaluate the financial performance of a hypothetical fixed deferred annuity portfolio over a 10-year period.
+
+Using Python, Excel, and publicly sourced interest-rate observations, the model projects insurer assets, policyholder account balances, investment income, credited interest, withdrawals, full surrenders, operating expenses, and insurer surplus.
+
+The project also performs sensitivity analysis to evaluate how changes in financial assumptions affect the insurer's projected financial position.
+
+An independently usable, formula-driven Excel workbook and supporting financial visualizations are generated automatically through GitHub Actions.
+
+**Objective:** Demonstrate practical introductory actuarial skills in financial modeling, cash-flow projections, assumption validation, sensitivity analysis, and communicating financial results.
+
+---
+
+## Key Financial Results
+
+The base scenario models an initial portfolio of $100,000 across 100 hypothetical fixed deferred annuity policies.
+
+After 10 years, the model produced the following results:
+
+| Financial Measure | Result |
+|---|---:|
+| Initial Premium | $100,000.00 |
+| Total Investment Income | $45,669.13 |
+| Total Credited Interest | $25,670.33 |
+| Total Partial Withdrawals | $20,388.17 |
+| Total Surrender Cash Payouts | $46,754.14 |
+| Total Surrender Charges | $954.17 |
+| Total Operating Expenses | $3,949.28 |
+| Ending Insurer Assets | $74,577.53 |
+| Ending Policyholder Liabilities | $57,573.85 |
+| **Ending Insurer Surplus** | **$17,003.68** |
+
+### Interpretation
+
+The model projected a positive ending insurer surplus of $17,003.68.
+
+Although insurer assets declined over the projection period due to policyholder cash payments and operating expenses, remaining policyholder liabilities declined further.
+
+Investment income, credited interest, surrender charges, and operating expenses collectively determined the change in the insurer's financial position.
+
+**Ending insurer surplus is defined as insurer assets minus remaining policyholder account liabilities.**
+
+This is an educational financial-position measure, not a representation of reported insurer net income, discounted pricing profit, or regulatory capital.
+
+---
+
+## Sensitivity Analysis
+
+The project evaluates how changes in four assumptions affect the insurer's ending surplus:
+
+1. Investment returns
+2. Credited interest rates
+3. Partial withdrawal rates
+4. Full surrender rates
+
+Each assumption is independently increased and decreased by 100 basis points.
+
+One basis point equals 0.01 percentage point.
+
+### One-Way Sensitivity Results
+
+| Assumption | -100 bps | Base Case | +100 bps |
+|---|---:|---:|---:|
+| Investment Return | $6,371.19 | $17,003.68 | $28,734.06 |
+| Credited Interest | $26,352.57 | $17,003.68 | $6,957.56 |
+| Partial Withdrawals | $17,666.92 | $17,003.68 | $16,372.49 |
+| Full Surrenders | $17,462.88 | $17,003.68 | $16,561.88 |
+
+### Key Findings
+
+**Investment returns had the greatest impact on modeled financial performance.**
+
+Increasing the investment return from 5.28% to 6.28% increased ending insurer surplus by approximately $11,730.
+
+**Credited interest rates were the second major driver.**
+
+Increasing the credited interest rate from 3.25% to 4.25% reduced ending insurer surplus by approximately $10,046.
+
+Changes in partial withdrawal and full surrender assumptions had smaller effects within the tested ranges.
+
+### Two-Way Interest-Rate Sensitivity
+
+The model also evaluates 25 combinations of investment returns and credited interest rates.
+
+| Scenario | Investment Return | Credited Rate | Ending Surplus |
+|---|---:|---:|---:|
+| Best Tested Scenario | 6.28% | 2.25% | $38,226.68 |
+| Base Scenario | 5.28% | 3.25% | $17,003.68 |
+| Worst Tested Scenario | 4.28% | 4.25% | -$3,532.48 |
+
+Of the 25 combinations tested, 24 produced positive terminal surplus and one produced negative terminal surplus.
+
+The worst-case scenario demonstrates how lower asset earnings and higher policyholder interest obligations can create a financial shortfall.
+
+These are deterministic scenarios rather than probability-weighted forecasts.
+
+---
+
+## Business Problem
+
+Fixed deferred annuities create long-term financial obligations for insurance companies.
+
+Insurers receive premium deposits, invest those assets, and credit interest to policyholder accounts.
+
+Their financial performance depends on multiple interacting factors:
+
+- Investment earnings generated by insurer assets
+- Contractual or assumed interest credited to policyholders
+- Partial policyholder withdrawals
+- Full contract surrenders
+- Surrender charges
+- Operating expenses
+- Remaining policyholder liabilities
+
+Changes in these factors influence both the insurer's cash flows and its ability to support policyholder obligations.
+
+This project demonstrates how a simplified actuarial projection can be used to quantify and interpret those relationships.
+
+---
+
+## Actuarial Methodology
+
+The model uses a deterministic, aggregate 10-year projection.
+
+The portfolio begins with:
+
+- $100,000 in total premium deposits
+- 100 hypothetical identical policies
+- $100,000 in insurer assets
+- $100,000 in policyholder account liabilities
+- Zero initial insurer surplus
+
+No additional premiums are collected after the initial deposit.
+
+### Annual Projection Process
+
+For each year, the model:
+
+1. Calculates investment income on opening insurer assets.
+2. Credits interest to opening policyholder account balances.
+3. Calculates partial withdrawals.
+4. Calculates full policy surrenders.
+5. Deducts surrender charges from surrender payments.
+6. Calculates operating expenses.
+7. Determines annual insurer cash inflows and outflows.
+8. Updates closing policyholder account liabilities.
+9. Updates closing insurer assets.
+10. Calculates the insurer's closing surplus.
+
+### Financial Relationships
+
+**Investment Income**
+
+Investment income equals opening insurer assets multiplied by the annual investment return.
+
+**Credited Interest**
+
+Credited interest equals opening policyholder balances multiplied by the annual credited interest rate.
+
+**Partial Withdrawals**
+
+Partial withdrawals are calculated after interest crediting and reduce both insurer assets and policyholder balances.
+
+**Full Surrenders**
+
+Full surrenders remove the expected surrendered account value from policyholder liabilities.
+
+The insurer pays the surrendered account balance after deducting the applicable surrender charge.
+
+**Operating Expenses**
+
+Operating expenses are calculated using opening policyholder account balances.
+
+**Insurer Surplus**
+
+Insurer Surplus = Insurer Assets - Policyholder Account Liabilities
+
+**Annual Change in Surplus**
+
+Change in Surplus = Investment Income - Credited Interest + Surrender Charges - Operating Expenses
+
+This relationship is checked by the Python model and automated validation tests.
+
+The measure is a simplified financial-position calculation, not a complete actuarial pricing profit measure.
+
+For full equations and assumptions, see [Actuarial Methodology](docs/methodology.md).
+
+---
+
+## Base Financial Assumptions
+
+| Assumption | Value |
+|---|---:|
+| Initial Premium | $100,000 |
+| Initial Policies | 100 |
+| Projection Period | 10 Years |
+| Annual Investment Return | 5.28% |
+| Annual Credited Interest | 3.25% |
+| Partial Withdrawal Rate | 2.50% |
+| Full Surrender Rate | 6.00% |
+| Surrender Charge Rate | 2.00% |
+| Operating Expense Rate | 0.50% |
+
+All financial assumptions except the included public-rate reference are hypothetical.
+
+The model holds these annual assumptions constant during the projection.
+
+---
+
+## Interest-Rate Data
+
+The project includes an interest-rate dataset attributed to the Federal Reserve Economic Data (FRED) platform.
+
+**Series:** DGS10
+
+**Series Name:** Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis
+
+**Original Source:** Board of Governors of the Federal Reserve System
+
+**Frequency:** Daily
+
+**Units:** Percent per annum
+
+**Source:** [FRED DGS10](https://fred.stlouisfed.org/series/DGS10)
+
+The repository includes five dated observations:
+
+- October 1, 2026
+- October 2, 2026
+- October 5, 2026
+- October 6, 2026
+- October 7, 2026
+
+The latest included observation is 5.28%, which the model uses as its illustrative annual investment return.
+
+The dataset is a static snapshot.
+
+The workflow validates the file structure and numerical assumptions. It does not automatically download updated observations or independently verify the data against FRED during execution.
+
+A Treasury yield is not equivalent to an actual insurance investment portfolio return. Its use here is an educational modeling simplification.
+
+---
+
+## Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| Python 3.12 | Financial modeling and actuarial calculations |
+| pandas | Financial data analysis and CSV generation |
+| NumPy | Sensitivity scenario construction |
+| Matplotlib | Financial charts and visualizations |
+| openpyxl | Excel workbook generation with formulas |
+| unittest | Automated financial validation |
+| GitHub | Source code management and documentation |
+| GitHub Actions | Cloud-based testing and automated execution |
+
+The complete workflow runs through GitHub's website.
+
+No local Python installation, terminal, or development environment is required.
+
+---
+
+## Repository Structure
+
+```text
+fixed-annuity-pricing/
+├── README.md
+├── requirements.txt
+├── src/
+│   ├── assumptions.py
+│   ├── annuity_model.py
+│   ├── run_model.py
+│   └── generate_excel.py
+├── analysis/
+│   └── sensitivity_analysis.py
+├── tests/
+│   └── test_model.py
+├── data/
+│   └── interest_rates.csv
+├── docs/
+│   ├── methodology.md
+│   └── findings.md
+└── .github/
+    └── workflows/
+        └── run_analysis.yml
+```
+
+### File Descriptions
+
+**src/assumptions.py**
+
+Stores financial assumptions, loads the reference interest-rate data, and validates inputs.
+
+**src/annuity_model.py**
+
+Performs annual annuity cash-flow projections and insurer surplus calculations.
+
+**src/run_model.py**
+
+Runs the baseline projection and saves financial results.
+
+**src/generate_excel.py**
+
+Generates an Excel workbook containing editable assumptions, formulas, financial projections, summaries, and charts.
+
+**analysis/sensitivity_analysis.py**
+
+Runs one-way and two-way sensitivity analyses and produces supporting charts.
+
+**tests/test_model.py**
+
+Contains automated tests covering financial calculations, reconciliation, validation, and workbook structure.
+
+**data/interest_rates.csv**
+
+Stores the included DGS10 interest-rate observations.
+
+**docs/methodology.md**
+
+Documents the model's calculations, assumptions, timing conventions, and limitations.
+
+**docs/findings.md**
+
+Presents the actual financial results and interpretation.
+
+**.github/workflows/run_analysis.yml**
+
+Defines the automated GitHub Actions workflow.
+
+---
+
+## Generated Excel Workbook
+
+The project automatically creates:
+
+`fixed_annuity_model.xlsx`
+
+The workbook contains five worksheets:
+
+| Worksheet | Contents |
+|---|---|
+| Guide | Instructions and model overview |
+| Assumptions | Editable financial inputs |
+| Rates | Included interest-rate observations |
+| Projection | Ten-year actuarial formulas |
+| Summary | Financial results, reconciliations, and charts |
+
+### Workbook Features
+
+- Editable financial assumptions
+- Formula-driven annual projections
+- Investment earnings and credited interest
+- Withdrawal and surrender calculations
+- Operating expense calculations
+- Insurer asset and liability tracking
+- Surplus calculations
+- Financial reconciliation formulas
+- Built-in Excel charts
+
+The workbook is designed to function independently of Python after generation.
+
+Financial assumptions can be changed directly in the workbook, allowing the spreadsheet formulas to recalculate financial results.
+
+The generated workbook has a fixed 10-year projection horizon.
+
+**Important:** openpyxl writes Excel formulas but does not evaluate them.
+
+Microsoft Excel or a compatible spreadsheet application must recalculate the workbook to display updated formula results.
+
+The Python-generated CSV and JSON outputs provide the separately calculated reference results.
+
+Editing the workbook does not automatically update those Python outputs.
+
+---
+
+## Financial Visualizations
+
+The project automatically generates four PNG charts.
+
+### 1. Account Balances vs Insurer Assets
+
+`account_and_assets.png`
+
+Compares remaining insurer assets with policyholder account liabilities across the projection period.
+
+### 2. Investment Income vs Credited Interest
+
+`investment_vs_crediting.png`
+
+Illustrates the relationship between annual investment earnings and interest credited to policyholders.
+
+### 3. One-Way Sensitivity Analysis
+
+`one_way_sensitivity.png`
+
+Shows how individual assumption shocks influence the insurer's terminal surplus.
+
+### 4. Two-Way Interest-Rate Sensitivity
+
+`investment_crediting_heatmap.png`
+
+Displays the effect of simultaneous investment-return and credited-rate changes.
+
+All charts are generated automatically and included in the GitHub Actions results artifact.
+
+---
+
+## Model Validation
+
+The project uses Python's built-in `unittest` framework to validate important model relationships.
+
+The test suite covers:
+
+- Valid and invalid financial assumptions
+- Interest-rate data loading
+- Investment income accuracy
+- Credited interest accuracy
+- Partial withdrawal calculations
+- Full surrender calculations
+- Surrender charge treatment
+- Known numerical examples
+- Account-balance reconciliation
+- Insurer cash-flow reconciliation
+- Annual surplus reconciliation
+- Year-to-year continuity
+- Investment-return sensitivity direction
+- Excel workbook structure and formulas
+
+The successful GitHub Actions workflow completed the automated validation stage before producing the final outputs.
+
+### Verified Execution
+
+**Status:** Success
+
+**Automated Tests:** Passed
+
+**Generated Artifact:** `annuity-analysis-results`
+
+The completed execution demonstrates that the model passed its implemented validation checks and successfully generated the requested financial outputs.
+
+A successful workflow does not establish production-level actuarial validity.
+
+---
+
+## How to Run the Project
+
+The project is designed to run entirely through GitHub's browser interface.
+
+### Step 1: Open GitHub Actions
+
+Open this repository and select the **Actions** tab.
+
+### Step 2: Select the Workflow
+
+Choose **Run Annuity Analysis**.
+
+### Step 3: Start the Analysis
+
+Click **Run workflow**, select the `main` branch, and confirm execution.
+
+### Step 4: Wait for Completion
+
+GitHub automatically:
+
+1. Checks out the repository.
+2. Installs Python.
+3. Installs the required dependencies.
+4. Executes the automated validation tests.
+5. Runs the baseline annuity projection.
+6. Generates the formula-driven Excel workbook.
+7. Runs sensitivity analysis.
+8. Generates financial charts.
+9. Uploads the output files as an artifact.
+
+### Step 5: Download the Results
+
+Open the completed workflow run.
+
+Find the **Artifacts** section.
+
+Download:
+
+`annuity-analysis-results`
+
+The artifact is a ZIP archive containing the generated workbook, financial data, summaries, and charts.
+
+GitHub Actions artifacts are retained for a limited period according to the workflow's retention setting.
+
+---
+
+## Generated Output Files
+
+The workflow produces:
+
+```text
+output/
+├── annual_projection.csv
+├── summary.json
+├── fixed_annuity_model.xlsx
+├── sensitivity_results.csv
+├── sensitivity_grid.csv
+├── sensitivity_summary.json
+└── charts/
+    ├── account_and_assets.png
+    ├── investment_vs_crediting.png
+    ├── one_way_sensitivity.png
+    └── investment_crediting_heatmap.png
+```
+
+These files are generated during execution rather than manually maintained in the source repository.
+
+### Output Descriptions
+
+**annual_projection.csv**
+
+Contains year-by-year financial calculations.
+
+**summary.json**
+
+Contains model assumptions, reference-rate information, and cumulative financial results.
+
+**fixed_annuity_model.xlsx**
+
+Contains the independently usable Excel financial model.
+
+**sensitivity_results.csv**
+
+Contains all one-way sensitivity scenarios.
+
+**sensitivity_grid.csv**
+
+Contains the 25 combined investment and credited-rate scenarios.
+
+**sensitivity_summary.json**
+
+Contains sensitivity ranges and scenario metadata.
+
+**charts/**
+
+Contains financial visualizations generated by Matplotlib.
+
+---
+
+## Results and Interpretation
+
+The completed base scenario produced positive terminal insurer surplus of $17,003.68.
+
+Investment returns and credited interest were the most influential financial drivers in the tested sensitivity scenarios.
+
+Higher investment returns improved the modeled financial position, while higher credited interest increased policyholder liabilities and reduced surplus.
+
+Changes in policyholder withdrawal and surrender assumptions produced smaller effects under the selected model structure.
+
+The two-way sensitivity analysis demonstrated that an unfavorable combination of lower investment returns and higher credited interest could generate negative terminal surplus.
+
+These findings support the importance of:
+
+- Interest-rate assumptions
+- Asset and liability relationships
+- Policyholder cash-flow behavior
+- Operating expense management
+- Financial sensitivity testing
+- Scenario-based actuarial analysis
+
+---
+
+## Limitations
+
+This project is an introductory actuarial modeling exercise.
+
+It is not intended for actual insurance product pricing, regulatory reserving, or capital assessment.
+
+The model excludes:
+
+- Mortality
+- Individual policy-level projections
+- Dynamic surrender behavior
+- Contract-specific guarantee structures
+- Stochastic investment returns
+- Asset defaults and reinvestment risk
+- Market-consistent asset valuation
+- Liquidity constraints
+- Policy acquisition costs
+- Commissions
+- Taxes
+- Statutory and accounting reserves
+- Regulatory capital requirements
+- Discounted present value of future distributable earnings
+
+The model also assumes constant annual financial rates throughout the projection.
+
+The ending surplus is a simplified difference between insurer assets and remaining policyholder account liabilities.
+
+It should not be treated as a complete measure of an insurance company's economic or accounting profitability.
+
+---
+
+## Skills Demonstrated
+
+This project demonstrates practical experience with:
+
+**Actuarial and Financial Analysis**
+- Insurance cash-flow projections
+- Fixed annuity financial modeling
+- Assumption development
+- Investment and crediting-rate analysis
+- Withdrawal and surrender modeling
+- Asset and liability reconciliation
+- Sensitivity and scenario analysis
+
+**Technical Skills**
+- Python programming
+- Financial data processing
+- Excel formula generation
+- Automated validation testing
+- Data visualization
+- GitHub repository management
+- GitHub Actions automation
+
+**Communication and Documentation**
+- Financial interpretation
+- Model methodology documentation
+- Assumption transparency
+- Explanation of financial limitations
+- Professional reporting of model results
+
+---
+
+## Conclusion
+
+This project demonstrates the development, execution, validation, and interpretation of an introductory fixed annuity financial model.
+
+Under the hypothetical base assumptions, the 10-year projection generated:
+
+- **$74,577.53 in ending insurer assets**
+- **$57,573.85 in remaining policyholder liabilities**
+- **$17,003.68 in positive ending insurer surplus**
+
+Sensitivity testing identified investment returns and credited interest rates as the dominant drivers of financial performance.
+
+The analysis also demonstrated how adverse combinations of financial assumptions can produce a modeled shortfall.
+
+By combining Python, Excel, automated testing, financial analysis, and clear documentation, the project provides a reproducible example of introductory actuarial modeling and financial sensitivity analysis.
